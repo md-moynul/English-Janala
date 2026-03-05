@@ -2,11 +2,16 @@ const createElements = (arr) => {
     const htmlElement = arr.map((el) => `<span class='btn bg-info/10 border-none hover:bg-info'>${el}</span>`);
     return (htmlElement.join(' '))
 }
-const manageSpanner =(status) => {
-    if(status == true){
+function pronounceWord(word) {
+    const utterance = new SpeechSynthesisUtterance(word);
+    utterance.lang = "en-EN"; // English
+    window.speechSynthesis.speak(utterance);
+}
+const manageSpanner = (status) => {
+    if (status == true) {
         document.getElementById('spinner').classList.remove('hidden');
         document.getElementById('word-container').classList.add('hidden');
-    }else{
+    } else {
         document.getElementById('word-container').classList.remove('hidden');
         document.getElementById('spinner').classList.add('hidden');
     }
@@ -36,7 +41,7 @@ const loadWord = (id) => {
 
         })
 }
-const loadWordDetail = async(id) => {
+const loadWordDetail = async (id) => {
     const url = `https://openapi.programming-hero.com/api/word/${id}`;
     const res = await fetch(url);
     const details = await res.json();
@@ -78,7 +83,7 @@ const displayWord = (words) => {
 
         </div>
          `;
-         manageSpanner(false)
+        manageSpanner(false)
         return;
     }
     words.forEach(word => {
@@ -92,7 +97,7 @@ const displayWord = (words) => {
             <div class="flex justify-between items-center">
                 <button onclick ="loadWordDetail(${word.id})" class="btn bg-info/10 border-none hover:bg-info"><i
                         class="fa-solid fa-circle-info"></i></button>
-                <button class="btn bg-info/10 border-none hover:bg-info"><i
+                <button onclick="pronounceWord('${word.word}')" class="btn bg-info/10 border-none hover:bg-info"><i
                         class="fa-solid fa-volume-high"></i></button>
             </div>
         </div>
@@ -116,3 +121,16 @@ const displayLevel = (data) => {
     });
 }
 loadLevel();
+document.getElementById("btn-search").addEventListener('click', () => {
+    removeActive();
+    const searchValue = document.getElementById('input-search').value;
+    fetch('https://openapi.programming-hero.com/api/words/all')
+        .then(res => res.json())
+        .then(json => {
+            const allWord = json.data;
+            const filterWord = allWord.filter(word => word.word.toLowerCase().includes(searchValue));
+            displayWord(filterWord)
+        }
+        )
+
+})
