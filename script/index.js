@@ -2,6 +2,16 @@ const createElements = (arr) => {
     const htmlElement = arr.map((el) => `<span class='btn bg-info/10 border-none hover:bg-info'>${el}</span>`);
     return (htmlElement.join(' '))
 }
+const manageSpanner =(status) => {
+    if(status == true){
+        document.getElementById('spinner').classList.remove('hidden');
+        document.getElementById('word-container').classList.add('hidden');
+    }else{
+        document.getElementById('word-container').classList.remove('hidden');
+        document.getElementById('spinner').classList.add('hidden');
+    }
+}
+
 const loadLevel = () => {
     fetch('https://openapi.programming-hero.com/api/levels/all')
         .then(res => res.json())
@@ -14,6 +24,7 @@ const removeActive = () => {
     });
 }
 const loadWord = (id) => {
+    manageSpanner(true);
     const url = `https://openapi.programming-hero.com/api/level/${id}`
     fetch(url)
         .then(res => res.json())
@@ -31,21 +42,6 @@ const loadWordDetail = async(id) => {
     const details = await res.json();
     displayWordDetails(details.data);
 }
-// {
-//     "word": "Eager",
-//     "meaning": "আগ্রহী",
-//     "pronunciation": "ইগার",
-//     "level": 1,
-//     "sentence": "The kids were eager to open their gifts.",
-//     "points": 1,
-//     "partsOfSpeech": "adjective",
-//     "synonyms": [
-//         "enthusiastic",
-//         "excited",
-//         "keen"
-//     ],
-//     "id": 5
-// }
 const displayWordDetails = (word) => {
     const detailsBox = document.getElementById('details-container');
     console.log(word)
@@ -82,6 +78,7 @@ const displayWord = (words) => {
 
         </div>
          `;
+         manageSpanner(false)
         return;
     }
     words.forEach(word => {
@@ -101,6 +98,7 @@ const displayWord = (words) => {
         </div>
         `
         wordContainer.append(newWord)
+        manageSpanner(false);
     });
 }
 const displayLevel = (data) => {

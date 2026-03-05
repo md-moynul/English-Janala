@@ -106,8 +106,11 @@
         </div>
 
     </section>
-
-    <section id="word-container" class="bg-base-300 p-8 my-10 w-11/12 mx-auto grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <section id="spinner" class="flex justify-center items-center hidden">
+        <span class="loading loading-dots loading-xl"></span>
+    </section>
+    <section id="word-container"
+        class="bg-base-300 p-8 my-10 w-11/12 mx-auto grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 gap-8">
 
         <div class="col-span-full text-center py-15 bangla-font space-y-5">
             <p class="text-gray-500">আপনি এখনো কোন Lesson Select করুন</p>
@@ -115,19 +118,19 @@
         </div>
     </section>
     <!-- Open the modal using ID.showModal() method -->
-<dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
-  <div class="modal-box">
-    <div id="details-container">
-        
-    </div>
-    <div class="modal-action">
-      <form method="dialog">
-        <!-- if there is a button in form, it will close the modal -->
-        <button class="btn">Close</button>
-      </form>
-    </div>
-  </div>
-</dialog>
+    <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box">
+            <div id="details-container">
+
+            </div>
+            <div class="modal-action">
+                <form method="dialog">
+                    <!-- if there is a button in form, it will close the modal -->
+                    <button class="btn">Close</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
     <script src="./script/index.js"></script>
 </body>
 
