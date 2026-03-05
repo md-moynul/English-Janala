@@ -1,3 +1,7 @@
+const createElements = (arr) => {
+    const htmlElement = arr.map((el) => `<span class='btn bg-info/10 border-none hover:bg-info'>${el}</span>`);
+    return (htmlElement.join(' '))
+}
 const loadLevel = () => {
     fetch('https://openapi.programming-hero.com/api/levels/all')
         .then(res => res.json())
@@ -20,6 +24,51 @@ const loadWord = (id) => {
             displayWord(json.data)
 
         })
+}
+const loadWordDetail = async(id) => {
+    const url = `https://openapi.programming-hero.com/api/word/${id}`;
+    const res = await fetch(url);
+    const details = await res.json();
+    displayWordDetails(details.data);
+}
+// {
+//     "word": "Eager",
+//     "meaning": "আগ্রহী",
+//     "pronunciation": "ইগার",
+//     "level": 1,
+//     "sentence": "The kids were eager to open their gifts.",
+//     "points": 1,
+//     "partsOfSpeech": "adjective",
+//     "synonyms": [
+//         "enthusiastic",
+//         "excited",
+//         "keen"
+//     ],
+//     "id": 5
+// }
+const displayWordDetails = (word) => {
+    const detailsBox = document.getElementById('details-container');
+    console.log(word)
+    detailsBox.innerHTML = `
+        <div class="space-y-6 p-5">
+            <h2 class="font-bold text-4xl">${word.word} (<i class="fa-solid fa-microphone-lines"></i>   :${word.meaning})</h2>
+            <div class="space-y-3">
+                <p class="font-bold text-2xl">Meaning</p>
+                <p class="font-medium text-2xl">${word.meaning}</p>
+            </div>
+            <div class="space-y-3">
+                <p class="font-bold text-2xl">Example</p>
+                <p class="font-medium ">${word.sentence}</p>
+            </div>
+            <div class="space-y-3">
+                <p class="font-bold text-2xl">সমার্থক শব্দ গুলো</p>
+                <div class="space-x-5">
+                    ${createElements(word.synonyms)}
+                </div>
+            </div>
+        </div>
+        `
+    document.getElementById('my_modal_5').showModal();
 }
 const displayWord = (words) => {
     const wordContainer = document.getElementById('word-container');
@@ -44,7 +93,7 @@ const displayWord = (words) => {
             <p class="text-xl font-semibold">Meaning /Pronunciation</p>
             <div class="font-bold text-2xl text-black/70 bangla-font">"${word.meaning ? word.meaning : "কোন অর্থ পাওয়া যায়নি"} / ${word.pronunciation ? word.pronunciation : "কোন pronunciation পাওয়া যায়নি"}"</div>
             <div class="flex justify-between items-center">
-                <button class="btn bg-info/10 border-none hover:bg-info"><i
+                <button onclick ="loadWordDetail(${word.id})" class="btn bg-info/10 border-none hover:bg-info"><i
                         class="fa-solid fa-circle-info"></i></button>
                 <button class="btn bg-info/10 border-none hover:bg-info"><i
                         class="fa-solid fa-volume-high"></i></button>
